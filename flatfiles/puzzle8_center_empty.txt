@@ -3,17 +3,49 @@ For a game with 8 tiles of blocks on a 3x3 grid,
 write down the Facts and Rules to model the game state 
 shown as the follows:
 
- y\\x   pos1     pos2     pos3
-     ┌────────┬────────┬────────┐
-pos1 │ tile1  │ tile2  │ tile3  │
-     ├────────┼────────┼────────┤
-pos2 │ tile8  │ empty  │ tile4  │
-     ├────────┼────────┼────────┤
-pos3 │ tile7  │ tile6  │ tile5  │
-     └────────┴────────┴────────┘
+
 
 Example: 
 fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+
+fact: (name tile1)
+fact: (name tile2)
+fact: (name tile3)
+fact: (name tile4)
+fact: (name tile5)
+fact: (name tile6)
+fact: (name tile7)
+fact: (name tile8)
+
+fact: (xcord tile1 pos1)
+fact: (xcord tile8 pos1)
+fact: (xcord tile7 pos1)
+fact: (xcord tile2 pos2)
+fact: (xcord tile6 pos2)
+fact: (xcord tile3 pos3)
+fact: (xcord tile4 pos3)
+fact: (xcord tile5 pos3)
+
+fact: (ycord tile1 pos1)
+fact: (ycord tile2 pos1)
+fact: (ycord tile3 pos1)
+fact: (ycord tile8 pos2)
+fact: (ycord tile4 pos2)
+fact: (ycord tile7 pos3)
+fact: (ycord tile6 pos3)
+fact: (ycord tile5 pos3)
+
+fact: (name empty)
+fact: (xcord empty pos2)
+fact: (ycord empty pos2)
+
+rule: ((xcord ?a ?s) (xcord ?b ?s) (ycord ?a pos2)) -> (adj ?a ?b)
+rule: ((xcord ?a ?s) (xcord ?b ?s) (ycord ?b pos2)) -> (adj ?a ?b)
+
+rule: ((ycord ?a ?s) (ycord ?b ?s) (xcord ?a pos2)) -> (adj ?a ?b)
+rule: ((ycord ?a ?s) (ycord ?b ?s) (xcord ?b pos2)) -> (adj ?a ?b)
+
+rule: ((adj ?a empty) (xcord ?a ?x) (ycord ?a ?y) (xcord empty ?b) (ycord empty ?c)) -> (movable ?a ?x ?y ?b ?c)
